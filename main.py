@@ -1,16 +1,43 @@
-# This is a sample Python script.
+from game import board, pieces
+from game.pieces import King, Player
+from utils.colours import *
+from utils.spritesheet import SpriteSheet
+from game.board import *
+import pygame
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Display Setup
+pygame.init()
+screen_size = (800, 800)
+gameDisplay = pygame.display.set_mode(screen_size)
+pygame.display.set_caption('Chess 2')
+clock = pygame.time.Clock()
+
+# Load Assets
+pieces.sprite_sheet = SpriteSheet("assets/default_pieces.png", 6, 2, (255, 0, 0))
+
+# Game Setup
+board = Board(500)
+board.setup(START_FEN)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main():
+    while True:
+        # Events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        # Draw To Screen
+        gameDisplay.fill(DARK)  # Clear Screen
+
+        board.draw(gameDisplay, (screen_size[0] - board.size) / 2, (screen_size[1] - board.size) / 2)
+
+        # Update Display & Clock
+        pygame.display.update()
+        clock.tick(60)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
