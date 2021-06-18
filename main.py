@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 pieces.sprite_sheet = SpriteSheet("assets/default_pieces.png", 6, 2, (255, 0, 0))
 
 # Game Setup
-board = Board(500)
+board = Board(700, (screen_size[0] - 700) / 2, (screen_size[1] - 700) / 2)
 board.setup(START_FEN)
 
 
@@ -27,12 +27,25 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                button = event.button
+                pos = pygame.mouse.get_pos()
+                '''
+                1 - left click
+                2 - middle click
+                3 - right click
+                4 - scroll up
+                5 - scroll down
+                '''
+                if button == 1:
+                    board_pos = board.convert_to_board_pos(pos)
+                    if board_pos is not None:  # If clicked on board
+                        board.tile_clicked(board_pos)
 
         # Draw To Screen
         gameDisplay.fill(DARK)  # Clear Screen
 
-        board.draw(gameDisplay, (screen_size[0] - board.size) / 2, (screen_size[1] - board.size) / 2)
-
+        board.draw_white(gameDisplay)
         # Update Display & Clock
         pygame.display.update()
         clock.tick(60)
